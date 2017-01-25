@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
+const creamCache = require('./middleware/cache')
 
 const { slow } = require('./routes');
 
@@ -12,12 +13,14 @@ server.set('view engine', '.hbs');
 
 server.use(bodyParser.json());
 // server.use(creamCache.init()); /* student implements this */
+server.use(creamCache.init())
 server.use('/slow', slow);
 
 server.get('/', (req, res) => {
+
   res.render('index');
 });
 
 server.listen(PORT, () => {
-  process.stdout.write(`server listening on port ${PORT}`);
+  process.stdout.write(`server listening on port ${PORT}\n`);
 });
